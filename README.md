@@ -51,7 +51,7 @@ Phishing/
 
 ```bash
 # Clone the repository
-git clone https://github.com/<your-username>/phishing-url-detector.git
+git clone https://github.com/JaiRathor/phishing-url-detector.git
 
 # Navigate into the project
 cd phishing-url-detector
