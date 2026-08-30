@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhishShield | AI & Heuristic Phishing Detection</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Background Animated Grid Glow -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <div class="grid-overlay"></div>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="navbar">
+            <div class="logo">
+                <i class="fa-solid fa-shield-halved logo-icon"></i>
+                <span class="logo-text">Phish<span class="highlight">Shield</span></span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <h1 class="hero-title">Real-Time Threat & <span class="gradient-text">Phishing Analysis</span></h1>
+                <p class="hero-subtitle">
+                    Analyze suspicious web links using lexical pattern recognition, domain entropy, and server-side heuristic analysis.
+                </p>
+            </section>
+
+            <!-- URL Scanner Form Card -->
+            <div class="card scanner-card">
+                <form id="analyzerForm" class="scanner-form">
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-link input-icon"></i>
+                        <input 
+                            type="url" 
+                            id="urlInput" 
+                            placeholder="Paste suspicious URL here (e.g., https://paypal-security-update.com/login)..." 
+                            required 
+                            autocomplete="off"
+                        >
+                        <button type="button" id="clearBtn" class="clear-btn hidden" title="Clear input">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                    <button type="submit" id="analyzeBtn" class="btn btn-primary">
+                        <span class="btn-text"><i class="fa-solid fa-bolt-lightning"></i> Analyze Threat</span>
+                        <span class="spinner hidden"></span>
+                    </button>
+                </form>
+
+                <!-- Quick Samples -->
+                <div class="sample-chips">
+                    <span class="sample-label">Try a sample:</span>
+                    <button class="chip" data-sample="https://google.com"><i class="fa-solid fa-check circle-safe"></i> Safe URL</button>
+                    <button class="chip" data-sample="http://192.168.1.1/login.php"><i class="fa-solid fa-triangle-exclamation circle-warn"></i> Raw IP Address</button>
+                    <button class="chip" data-sample="http://secure-verify-paypal.account-update.xyz/login.html"><i class="fa-solid fa-skull circle-danger"></i> Phishing Attempt</button>
+                </div>
+            </div>
+
+            <!-- Loading State Overlay -->
+            <div id="loadingCard" class="card loading-card hidden">
+                <div class="radar-spinner">
+                    <div class="radar-sweep"></div>
+                </div>
+                <h3>Scanning Target URL</h3>
+                <p class="loading-subtext">Executing server heuristics, payload breakdown, and structural risk profiling...</p>
+            </div>
+
+            <!-- Results Dashboard -->
+            <div id="resultsCard" class="card results-card hidden">
+                <!-- Result Overview Header -->
+                <div class="results-header">
+                    <div class="url-meta">
+                        <span class="meta-label">Target URL Analyzed</span>
+                        <h2 id="analyzedUrlDisplay" class="analyzed-url-text">https://example.com</h2>
+                    </div>
+                    <div id="riskBadge" class="risk-badge status-safe">
+                        <i id="riskIcon" class="fa-solid fa-shield-check"></i>
+                        <span id="riskLevelText">LEGITIMATE</span>
+                    </div>
+                </div>
+
+                <!-- Threat Meter & Metrics -->
+                <div class="metrics-grid">
+                    <!-- Gauge Card -->
+                    <div class="metric-card score-card">
+                        <div class="card-header-sm">
+                            <i class="fa-solid fa-gauge-high"></i> Threat Risk Index
+                        </div>
+                        <div class="gauge-wrapper">
+                            <div class="gauge-ring">
+                                <svg class="gauge-svg" viewBox="0 0 100 100">
+                                    <circle class="gauge-bg" cx="50" cy="50" r="42"></circle>
+                                    <circle id="gaugeFill" class="gauge-fill" cx="50" cy="50" r="42"></circle>
+                                </svg>
+                                <div class="gauge-text">
+                                    <span id="riskScoreNumber" class="score-number">0</span>
+                                    <span class="score-max">/100</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Summary Metrics -->
+                    <div class="metric-card details-summary">
+                        <div class="card-header-sm">
+                            <i class="fa-solid fa-list-check"></i> Key Indicators
+                        </div>
+                        <div class="indicator-list">
+                            <div class="indicator-item">
+                                <span>Protocol Security</span>
+                                <strong id="indProtocol" class="text-safe">HTTPS Secure</strong>
+                            </div>
+                            <div class="indicator-item">
+                                <span>Domain Type</span>
+                                <strong id="indDomainType">Standard Domain</strong>
+                            </div>
+                            <div class="indicator-item">
+                                <span>Threat Triggers</span>
+                                <strong id="indTriggerCount">0 Warnings</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Threat Flags -->
+                <div class="threat-details-section">
+                    <h3><i class="fa-solid fa-magnifying-glass-chart"></i> Risk Analysis Findings</h3>
+                    <div id="reasonsContainer" class="reasons-list">
+                        <!-- Dynamic items injected via urlAnalyzer.js -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error Banner -->
+            <div id="errorCard" class="card error-card hidden">
+                <i class="fa-solid fa-circle-exclamation error-icon"></i>
+                <div class="error-info">
+                    <h3 id="errorTitle">Analysis Failed</h3>
+                    <p id="errorMessage">Unable to communicate with backend server. Ensure server.js is running on port 5000.</p>
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <script src="js/urlAnalyzer.js"></script>
+</body>
+</html>
