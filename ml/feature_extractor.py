@@ -108,8 +108,8 @@ def extract_url_features(url: str) -> list:
     # 17. Query Parameter Depth
     query_count = len(parsed.query.split('&')) if parsed.query else 0
 
-    # 18. Suspicious File Extension in Path
-    suspicious_ext = 1 if re.search(r'\.(exe|php|asp|bat|sh|cgi|pl)$', pathname) else 0
+    # 18. Suspicious Executable / Payload Extension in Path
+    suspicious_ext = 1 if re.search(r'\.(exe|bat|sh|cmd|apk|vbs|scr|jar|pif|iso|wsf)$', pathname) else 0
 
     return [
         is_ip, url_length, has_at_symbol, double_slash_path, hyphen_count,

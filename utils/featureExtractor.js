@@ -170,8 +170,8 @@ function extractFeatures(inputUrl) {
     // 17. Query Parameter Depth
     const queryParamCount = parsed.search ? parsed.search.split("&").length : 0;
 
-    // 18. Suspicious File Extension in Path
-    const suspiciousExt = /\.(exe|php|asp|bat|sh|cgi|pl)$/i.test(pathname);
+    // 18. Suspicious Executable / Payload Extension in Path (e.g., .exe, .bat, .apk)
+    const suspiciousExt = /\.(exe|bat|sh|cmd|apk|vbs|scr|jar|pif|iso|wsf)$/i.test(pathname);
 
     // Simulated Metadata
     const domainMetadata = simulateDomainMetadata(hostname, tld, brandSpoofed, usesIpAddress, isKnownLegit);
@@ -180,7 +180,7 @@ function extractFeatures(inputUrl) {
 
     const features = {
         usesIpAddress:       { val: usesIpAddress,       risk: usesIpAddress ? 0.95 : 0,                                             label: "IP Address in Hostname" },
-        urlLength:           { val: urlLength,            risk: lengthFeature === 1 ? 0.70 : lengthFeature === 0 ? 0.35 : 0,          label: "URL Character Length" },
+        urlLength:           { val: urlLength,            risk: lengthFeature === 1 ? 0.60 : lengthFeature === 0 ? 0.25 : 0,          label: "URL Character Length" },
         hasAtSymbol:         { val: hasAtSymbol,          risk: hasAtSymbol ? 0.90 : 0,                                               label: "Presence of '@' Symbol" },
         hasDoubleSlashInPath:{ val: hasDoubleSlashInPath, risk: hasDoubleSlashInPath ? 0.85 : 0,                                      label: "Double Slash Redirect in Path" },
         hasHyphenInDomain:   { val: hasHyphenInDomain,   risk: (isKnownLegit ? 0 : (hyphenCount > 2 ? 0.75 : hasHyphenInDomain ? 0.40 : 0)), label: "Prefix/Suffix Hyphens in Domain", count: hyphenCount },
@@ -191,11 +191,11 @@ function extractFeatures(inputUrl) {
         matchedKeywords:     { val: matchedKeywords,      risk: (isKnownLegit ? 0 : Math.min(0.90, matchedKeywords.length * 0.25)),   label: "Suspicious Keywords in URL" },
         brandSpoofed:        { val: detectedBrands,       risk: brandSpoofed ? 0.95 : 0,                                              label: "Targeted Brand Spoofing / Subdomain Masking" },
         tldRisk:             { val: tld,                  risk: (isKnownLegit || isTrustedTLD) ? 0 : tldRiskWeight,                   label: "Top-Level Domain (TLD) Threat Index" },
-        entropy:             { val: entropy,              risk: (isKnownLegit ? 0 : (entropy > 4.5 ? 0.75 : entropy > 4.0 ? 0.40 : 0.10)), label: "URL Shannon Entropy" },
-        specialCharCount:    { val: specialCharCount,     risk: (isKnownLegit ? 0 : (specialCharCount > 8 ? 0.70 : specialCharCount > 4 ? 0.35 : 0)), label: "Special Character Count" },
+        entropy:             { val: entropy,              risk: (isKnownLegit ? 0 : (entropy > 4.8 ? 0.60 : entropy > 4.2 ? 0.25 : 0)), label: "URL Shannon Entropy" },
+        specialCharCount:    { val: specialCharCount,     risk: (isKnownLegit ? 0 : (specialCharCount > 10 ? 0.60 : specialCharCount > 6 ? 0.25 : 0)), label: "Special Character Count" },
         nonStandardPort:     { val: nonStandardPort,      risk: nonStandardPort ? 0.80 : 0,                                           label: "Non-Standard Web Port Usage", port: parsed.port },
         hasPunycode:         { val: hasPunycode,          risk: hasPunycode ? 0.88 : 0,                                               label: "Punycode / IDN Homograph Attack" },
-        queryParamCount:     { val: queryParamCount,      risk: (isKnownLegit ? 0 : (queryParamCount > 5 ? 0.60 : queryParamCount > 3 ? 0.30 : 0)), label: "Query Parameter Depth" },
+        queryParamCount:     { val: queryParamCount,      risk: (isKnownLegit ? 0 : (queryParamCount > 5 ? 0.50 : queryParamCount > 3 ? 0.20 : 0)), label: "Query Parameter Depth" },
         suspiciousExt:       { val: suspiciousExt,        risk: suspiciousExt ? 0.85 : 0,                                             label: "Suspicious File Extension in Path" }
     };
 

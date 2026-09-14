@@ -43,7 +43,14 @@ X_temp, X_test, y_temp, y_test = train_test_split(X_raw, y, test_size=0.15, rand
 X_train, X_val, y_train, y_val = train_test_split(X_temp, y_temp, test_size=0.1765, random_state=42, stratify=y_temp)
 
 print("4. Running feature selection (SelectFromModel)...")
-base_rf = RandomForestClassifier(n_estimators=100, random_state=42)
+# In ml/train_model.py
+base_rf = RandomForestClassifier(
+    n_estimators=100,
+    max_depth=12,          
+    min_samples_leaf=5,    
+    random_state=42
+)
+
 base_rf.fit(X_train, y_train)
 
 selector = SelectFromModel(base_rf, threshold="mean", prefit=True)
